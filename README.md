@@ -6,4 +6,4 @@ The objective of the project is to create a challenge for myself, where I will d
 
 ## Then there's a picture of Kirian
 
-![Kirian](/Kirian.jpeg) 
+<img src="Kirian.jpeg" widith="300px" height="2 00px">
