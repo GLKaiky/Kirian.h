@@ -31,13 +31,12 @@ void createHeader(const char* fileName, short header_size){
     fclose(binFile);    
 }
 
-void create(const char* fileName, unsigned char* toByteArray, size_t dataSize){
+void create(const char* fileName, void * obj){
     FILE* binFile = fopen(fileName, "ab");
-        if(!binFile){
+        if(!binFile){   
             printf("Error opening the file!");
         }
+    fwrite(obj, sizeof(obj), 1, binFile);
 
-    
-    fwrite(toByteArray, sizeof(unsigned char), dataSize, binFile);
     fclose(binFile);
 }

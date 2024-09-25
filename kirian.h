@@ -4,7 +4,7 @@
 
 void createHeader(const char* fileName, short header_size);
 
-void create(const char* fileName, unsigned char * typeByteArray, size_t dataSize);
+void create(const char* fileName,void * obj);
 
 void read(const char * fileName, void * structPointer, size_t structSize);
 

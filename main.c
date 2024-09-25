@@ -20,16 +20,31 @@ unsigned char* toByteArray(pessoa p){
     return byteArray;
 }
 
-int main(){
-    FILE* binfile;
-    pessoa p;
+// Função principal
+int main() {
+    printf("aqui");
+    // Aloca memória para o objeto pessoa
+    pessoa* p = (pessoa*)malloc(sizeof(pessoa));
+    if (p == NULL) { // Verifica se a alocação foi bem-sucedida
+        printf("Erro ao alocar memória!\n");
+        return 1;
+    }
+
+    // Atribuindo valores à struct corretamente
+    strcpy(p->name, "eduardo"); // Usa strcpy para atribuir a string
+    p->id = 2;
     
-    p.name = "eduardo";
-    p.id = 2;
-    unsigned char* byteArray = toByteArray(p);
+    FILE* binFile = fopen("teste.db", "ab"); // Abre o arquivo para escrita
+    if (!binFile) {   
+        printf("Erro ao abrir o arquivo!\n");
+        free(p); // Libera a memória antes de retornar
+        return 1;
+    }
 
-    size_t dataSize = sizeof(byteArray);
+    fwrite(p, sizeof(pessoa), 1, binFile); // Escreve o objeto no arquivo
 
-    create("teste.db", byteArray, dataSize);
+    fclose(binFile); // Fecha o arquivo
+    free(p); // Libera a memória alocada
 
+    return 0;
 }
