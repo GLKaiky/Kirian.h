@@ -14,7 +14,7 @@ int main() {
     strcpy(p.name, "Eduardo"); // Atribui o nome
     p.id = 52; 
 
-    createHeader("pessoasdois.db", 2);
+    createHeader("pessoasdois.db", 1);
 
     create("pessoasdois.db", &p, sizeof(pessoa));
 

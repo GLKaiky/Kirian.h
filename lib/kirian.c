@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "lib/kirian.h" 
+#include "kirian.h" 
 #include <stdio.h>
 
 #define KIRIAN_H
@@ -34,11 +34,24 @@ void createHeader(const char* fileName, short header_size){
 }
 
 void create(const char* fileName, void* obj, size_t objSize){
-    FILE* binFile = fopen(fileName, "ab");
+    FILE* binFile = fopen(fileName, "r+b");
     if(!binFile){   
         printf("Error opening the file!");
     }
+
+
+    fseek(binFile, 0, SEEK_SET);
     
+    short num;
+    fread(&num, sizeof(short), 1, binFile);
+    num+=1;
+
+    fseek(binFile, 0, SEEK_SET);
+
+    fwrite(&num, sizeof(short), 1, binFile);
+    
+    fseek(binFile, 0, SEEK_END);
+
     fwrite(obj, objSize, 1, binFile);
 
     fclose(binFile);
