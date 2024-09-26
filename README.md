@@ -1,10 +1,9 @@
-## What's the objective?
+## What's my goal?
 
-It is a simple personal project called with "Kirian.h" in honor of the kitten Kirian.
+It is a simple personal project called with "Kirian.h" in honor of Kirian, the kitten.
 
-The objective of the project is to create a challenge for myself, where I will develop a library in C to manipulate files at the byte level, creating a CRUD for structures
+The goal of this project is creating a challenge for myself, in which I will develop a library in C to manipulate files at byte level , creating a CRUD for its structure
 
-## Then there's a picture of Kirian
-
+## And here's a picture of Kirian
+        
 <img src="/bin/Kirian.jpeg" widith="300px" height="300px">
-    
