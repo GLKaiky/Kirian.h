@@ -1,50 +1,22 @@
-#include "kirian.h"
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include "kirian.h"         
 
-typedef struct pessoa{
-    char* name;
-    int id;
-}pessoa;
+typedef struct {
+    char name[50]; // Nome da pessoa
+    int id;       // ID  pessoa
+} pessoa;
 
-unsigned char* toByteArray(pessoa p){
-    unsigned char* byteArray = (unsigned char*) malloc(sizeof(pessoa));
-
-    if(!byteArray){
-        printf("ERRO DE ALOCAÇÃO!");
-    }
-
-    memcpy(byteArray, &p, sizeof(pessoa));
-
-    return byteArray;
-}
-
-// Função principal
 int main() {
-    printf("aqui");
-    // Aloca memória para o objeto pessoa
-    pessoa* p = (pessoa*)malloc(sizeof(pessoa));
-    if (p == NULL) { // Verifica se a alocação foi bem-sucedida
-        printf("Erro ao alocar memória!\n");
-        return 1;
-    }
+    pessoa p, s;
 
-    // Atribuindo valores à struct corretamente
-    strcpy(p->name, "eduardo"); // Usa strcpy para atribuir a string
-    p->id = 2;
-    
-    FILE* binFile = fopen("teste.db", "ab"); // Abre o arquivo para escrita
-    if (!binFile) {   
-        printf("Erro ao abrir o arquivo!\n");
-        free(p); // Libera a memória antes de retornar
-        return 1;
-    }
+    strcpy(p.name, "Eduardo"); // Atribui o nome
+    p.id = 52; 
 
-    fwrite(p, sizeof(pessoa), 1, binFile); // Escreve o objeto no arquivo
+    create("pessoasdois.db", &p, sizeof(pessoa));
 
-    fclose(binFile); // Fecha o arquivo
-    free(p); // Libera a memória alocada
+    read("pessoasdois.db", &s, sizeof(pessoa));
 
-    return 0;
+    printf("%s e %d", s. name, s.id);
 }
