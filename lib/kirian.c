@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "kirian.h" 
+#include "lib/kirian.h" 
 #include <stdio.h>
 
 #define KIRIAN_H

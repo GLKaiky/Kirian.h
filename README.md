@@ -6,4 +6,4 @@ The objective of the project is to create a challenge for myself, where I will d
 
 ## Then there's a picture of Kirian
 
-<img src="/Kirian.jpeg" widith="300px" height="300px">
+<img src="/bin/Kirian.jpeg" widith="300px" height="300px">

@@ -1,8 +1,7 @@
 all:
-	gcc main.c -L. -lkirian -o main
-	./main
+	gcc src/main.c -Llib -lkirian -o src/main
+	src/main
 
 compile:
-	gcc -c kirian.c -o kirian.o
-	ar rc libkirian.a kirian.o
-	
+	gcc -c lib/kirian.c -o lib/kirian.o
+	ar rc lib/libkirian.a lib/kirian.o
