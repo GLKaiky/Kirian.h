@@ -11,14 +11,14 @@ typedef struct {
 int main() {
     pessoa p, s;
 
-    strcpy(p.name, "Eduardo"); // Atribui o nome
+    strcpy(p.name, "Eduardo "); // Atribui o nome
     p.id = 52; 
 
-    createHeader("pessoasdois.db", 1);
+    createHeader("./data/pessoasdois.db", 1);
 
-    create("pessoasdois.db", &p, sizeof(pessoa));
+    create("./data/pessoasdois.db", &p, sizeof(pessoa));
 
-    read("pessoasdois.db", &s, sizeof(pessoa));
+    read("./data/pessoasdois.db", &s, sizeof(pessoa));
 
     printf("%s e %d", s. name, s.id);
            

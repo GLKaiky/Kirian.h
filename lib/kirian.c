@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include "kirian.h" 
 #include <stdio.h>
+#include <stdbool.h>
 
 #define KIRIAN_H
 
@@ -34,15 +35,18 @@ void createHeader(const char* fileName, short header_size){
 }
 
 void create(const char* fileName, void* obj, size_t objSize){
+
     FILE* binFile = fopen(fileName, "r+b");
+    short num;
+    bool lapid = true;
+
+
     if(!binFile){   
         printf("Error opening the file!");
     }
 
-
     fseek(binFile, 0, SEEK_SET);
     
-    short num;
     fread(&num, sizeof(short), 1, binFile);
     num+=1;
 
@@ -52,10 +56,14 @@ void create(const char* fileName, void* obj, size_t objSize){
     
     fseek(binFile, 0, SEEK_END);
 
+    fwrite(&lapid, sizeof(bool), 1, binFile);
+
+    fwrite(&objSize, sizeof(size_t), 1, binFile);
+
     fwrite(obj, objSize, 1, binFile);
 
     fclose(binFile);
-}
+}   
 
 void read(const char *fileName, void *structPointer, size_t structSize) {
     FILE *binFile = fopen(fileName, "rb");
