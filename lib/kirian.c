@@ -34,7 +34,7 @@ void createHeader(const char* fileName, short header_size){
     fclose(binFile);    
 }
 
-void create(const char* fileName, void* obj, size_t objSize){
+bool create(const char* fileName, void* obj, size_t objSize){
 
     FILE* binFile = fopen(fileName, "r+b");
     short num;
@@ -43,26 +43,49 @@ void create(const char* fileName, void* obj, size_t objSize){
 
     if(!binFile){   
         printf("Error opening the file!");
+        return false;
     }
 
     fseek(binFile, 0, SEEK_SET);
     
-    fread(&num, sizeof(short), 1, binFile);
+    if(fread(&num, sizeof(short), 1, binFile) != 1){
+        perror("Error reading the file");
+        fclose(binFile);
+        return false;
+    }
+
     num+=1;
 
     fseek(binFile, 0, SEEK_SET);
 
-    fwrite(&num, sizeof(short), 1, binFile);
+    if(fwrite(&num, sizeof(short), 1, binFile) != 1){
+        perror("Error writing the file");
+        fclose(binFile);
+        return false;
+    }
     
     fseek(binFile, 0, SEEK_END);
 
-    fwrite(&lapid, sizeof(bool), 1, binFile);
+    if(fwrite(&lapid, sizeof(bool), 1, binFile) != 1){
+        perror("Error writing the file");
+        fclose(binFile);
+        return false;
+    }
 
-    fwrite(&objSize, sizeof(size_t), 1, binFile);
+    if(fwrite(&objSize, sizeof(size_t), 1, binFile) != 1){
+        perror("Error writing the file");
+        fclose(binFile);
+        return false;
+    }
 
-    fwrite(obj, objSize, 1, binFile);
+    if(fwrite(obj, objSize, 1, binFile) != 1){
+        perror("Error writing the object in the file");
+        fclose(binFile);
+        return false;
+    }
 
     fclose(binFile);
+    return true;
 }   
 
 void read(const char *fileName, void *structPointer, size_t structSize) {
@@ -71,7 +94,7 @@ void read(const char *fileName, void *structPointer, size_t structSize) {
         perror("Error opening the file"); // Exibe um erro caso não consiga abrir o arquivo
         return; // Retorna se não puder abrir o arquivo
     }
-    
+            
     size_t itemsRead = fread(structPointer, structSize, 1, binFile);
     if (itemsRead != 1) { // Verifica se a leitura foi bem-sucedida
         perror("Error reading from the file");
