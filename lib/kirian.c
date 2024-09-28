@@ -1,16 +1,26 @@
 #include <stdlib.h>
 #include "kirian.h" 
 #include <stdio.h>
+#include <string.h>
 #include <stdbool.h>
 
 #define KIRIAN_H
 
+static int headerSize;
+
 void createHeader(const char* fileName, short header_size){
+
+    if(headerSize > 0){
+        return;
+    }
+
     FILE* binFile = fopen(fileName, "ab");
 
     if(!binFile){   
         printf("Error opening the file!");
     }
+
+    headerSize = header_size;
 
     short* header = (short *) malloc (header_size * sizeof(short));
     
@@ -38,7 +48,7 @@ bool create(const char* fileName, void* obj, size_t objSize){
 
     FILE* binFile = fopen(fileName, "r+b");
     short num;
-    bool lapid = true;
+    bool lapid = false;
 
 
     if(!binFile){   
@@ -88,19 +98,60 @@ bool create(const char* fileName, void* obj, size_t objSize){
     return true;
 }   
 
-void read(const char *fileName, void *structPointer, size_t structSize) {
-    FILE *binFile = fopen(fileName, "rb");
-    if (!binFile) {
-        perror("Error opening the file"); // Exibe um erro caso não consiga abrir o arquivo
-        return; // Retorna se não puder abrir o arquivo
-    }
-            
-    size_t itemsRead = fread(structPointer, structSize, 1, binFile);
-    if (itemsRead != 1) { // Verifica se a leitura foi bem-sucedida
-        perror("Error reading from the file");
-    } else {
-        printf("Successfully read %zu item(s) from the file.\n", itemsRead);
-    }
+    void read(const char *fileName, void *structPointer, size_t structSize, void * primaryKey) {
+        FILE *binFile = fopen(fileName, "rb");
+        if (!binFile) {
+            perror("Error opening the file");   
+            return; 
+        }
 
-    fclose(binFile); // Fecha o arquivo após a leitura
-}
+        short objects_registred;
+        
+        if(fread(&objects_registred, sizeof(short), 1, binFile) != 1){
+            perror("Error writing the file");
+            fclose(binFile);
+            return;
+        }
+
+
+        if(headerSize > 1){
+            fseek(binFile, (headerSize - 1) * sizeof(short),SEEK_CUR);
+        }
+
+        for(short i = 0; i<objects_registred; i++){
+            bool lapid;
+
+            fread(&lapid, sizeof(bool), 1, binFile);
+
+            if(lapid == 1){
+                size_t objSize;
+
+                fread(&objSize, sizeof(size_t), 1, binFile);
+
+                fseek(binFile, objSize, SEEK_CUR); 
+            }else{
+                
+                size_t objSize;
+
+                char* objKey = malloc(sizeof(char*));   
+
+                fread(&objSize, sizeof(size_t), 1, binFile);
+                
+                long address = ftell(binFile);
+
+                fread(objKey, sizeof(primaryKey), 1, binFile);
+
+                if(strcmp(primaryKey, objKey) == 0){
+                    fseek(binFile, address, SEEK_SET);
+                    fread(structPointer, structSize, 1, binFile);     
+                    break;          
+                }else{
+                    fseek(binFile, address, SEEK_SET);  
+
+                    fseek(binFile, objSize, SEEK_CUR);
+                }
+            }
+        }
+
+        fclose(binFile); 
+    }
