@@ -12,8 +12,6 @@ typedef struct {
 
 int main() {
     pessoa p, s, i;
-
-    createHeader("./data/pessoas.db", 2);
     
     strcpy(i.name, "Samuel");
     i.id = 12;
@@ -23,9 +21,9 @@ int main() {
     p.id = 52; 
     p.casado = true;
 
-    int ptr = 11;  
+    int ptr = 52;  
 
-    read("./data/pessoas.db", &s, sizeof(pessoa), &ptr);
+    create("./data/pessoas.db", &i, sizeof(pessoa));
 
     printf("%s e %d e %d", s.name, s.id, s.casado);
 

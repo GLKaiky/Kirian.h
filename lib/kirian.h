@@ -1,3 +1,11 @@
+/**
+ * @file    kirian.h
+ * @author  Kaiky França da Silva
+ * @date    27/09/2024
+ * @version 1.0
+ *
+ */
+    
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>

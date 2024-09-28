@@ -46,20 +46,24 @@ void createHeader(const char* fileName, short header_size){
 
 bool create(const char* fileName, void* obj, size_t objSize){
 
+    if(headerSize <= 0){
+        printf("Error when initializing the file, please check if the header was created. Use the createHeader function\n");
+    }
+
     FILE* binFile = fopen(fileName, "r+b");
     short num;
     bool lapid = false;
 
 
     if(!binFile){   
-        printf("Error opening the file!");
+        printf("Error opening the file!\n");
         return false;
     }
 
     fseek(binFile, 0, SEEK_SET);
     
     if(fread(&num, sizeof(short), 1, binFile) != 1){
-        perror("Error reading the file");
+        perror("Error reading the file\n");
         fclose(binFile);
         return false;
     }
@@ -69,7 +73,7 @@ bool create(const char* fileName, void* obj, size_t objSize){
     fseek(binFile, 0, SEEK_SET);
 
     if(fwrite(&num, sizeof(short), 1, binFile) != 1){
-        perror("Error writing the file");
+        perror("Error writing the file\n");
         fclose(binFile);
         return false;
     }
@@ -77,19 +81,19 @@ bool create(const char* fileName, void* obj, size_t objSize){
     fseek(binFile, 0, SEEK_END);
 
     if(fwrite(&lapid, sizeof(bool), 1, binFile) != 1){
-        perror("Error writing the file");
+        perror("Error writing the file\n");
         fclose(binFile);
         return false;
     }
 
     if(fwrite(&objSize, sizeof(size_t), 1, binFile) != 1){
-        perror("Error writing the file");
+        perror("Error writing the file\n");
         fclose(binFile);
         return false;
     }
 
     if(fwrite(obj, objSize, 1, binFile) != 1){
-        perror("Error writing the object in the file");
+        perror("Error writing the object in the file\n  ");
         fclose(binFile);
         return false;
     }
