@@ -23,8 +23,10 @@ int main() {
 
     int ptr = 52;  
 
-    create("./data/pessoas.db", &i, sizeof(pessoa));
+    create("./data/pessoas.db", &p, sizeof(pessoa));
 
-    printf("%s e %d e %d", s.name, s.id, s.casado);
+    read("./data/pessoas.db", &s, sizeof(pessoa), &ptr);
+
+    printf("aaaaa %s", s.name);
 
 }
